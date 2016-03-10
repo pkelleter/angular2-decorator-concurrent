@@ -5,7 +5,7 @@ interface IWebWorkerMessageEvent<T> extends MessageEvent {
 	}
 }
 
-export function nxConcurrent<T> (target:Object,
+export function concurrent<T> (target:Object,
 								 propertyKey:string,
 								 descriptor:TypedPropertyDescriptor<(...args:any[]) => Promise<T>>) {
 

@@ -1,8 +1,21 @@
 # angular2-decorator-concurrent
 
 An Angular2 Decorator to automate running arbitrary functions in an external thread via WebWorker
+Written in and compatible only to Angular2 with TypeScript
+
+Installation:
+
+For the moment i have not prepared any conveniant support for installing this decorator.
+Please just copy the code from the concurrent.ts file to your project, import the decorator where needed
+and use it as explained in the example code.
 
 Example:
+
+In the following example due to the given annotation "concurrent" the annotated function "hardFunction"
+will automatically be wrapper inside of a WebWorker, hence not block the browser while computing.
+However, if you remove the annotation the browser will be blocked for 4 seconds while "computing".
+The function will resolve the promise with (5 * x) if x is even, otherwise it will reject with an output of (5 * x).
+Make sure to import the decorator and invoke the function "invokeWebWorker" with some parameter x.
 
 export class ExampleClass {
 
@@ -10,7 +23,7 @@ export class ExampleClass {
 
 	constructor() {}
 
-	@nxConcurrent
+	@concurrent
 	public hardFunction(x:number):Promise<number> {
 		let it = 0;
 		const s = new Date().getTime();
@@ -25,8 +38,8 @@ export class ExampleClass {
 		return promise;
 	}
 
-	public handleWebWorkerButtonClick(param) {
-		this.hardFunction(param).then(
+	public invokeWebWorker(x:number):void {
+		this.hardFunction(x).then(
 			(data) => {
 				console.log('Success! ', data);
 			},
