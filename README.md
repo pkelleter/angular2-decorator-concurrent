@@ -11,11 +11,13 @@ and use it as explained in the example code.
 
 Example:
 
-In the following example due to the given annotation "concurrent" the annotated function "hardFunction"
-will automatically be wrapper inside of a WebWorker, hence not block the browser while computing.
-However, if you remove the annotation the browser will be blocked for 4 seconds while "computing".
-The function will resolve the promise with (5 * x) if x is even, otherwise it will reject with an output of (5 * x).
+In the following example the function "hardFunction"will automatically be wrapped inside of a WebWorker,
+because of the given annotation "concurrent", hence the browser will not be blocked while "computing".
+
+However, if you remove the annotation, the browser will of course be blocked for 4 seconds during execution.
 Make sure to import the decorator and invoke the function "invokeWebWorker" with some parameter x.
+
+The function will resolve the given promise with (5 * x) if x is even, otherwise it will reject the Promise with (5 * x).
 
 export class ExampleClass {
 
