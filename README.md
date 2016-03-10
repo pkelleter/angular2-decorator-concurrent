@@ -11,19 +11,26 @@ and use it as explained in the example code.
 
 Example:
 
-In the following example the function "hardFunction"will automatically be wrapped inside of a WebWorker,
+For a working example you can also see this plunkr:
+https://plnkr.co/edit/8Q9fovRetlOIUz4FU9Gu?p=preview
+
+
+In the following example the function "hardFunction" will automatically be wrapped inside of a WebWorker,
 because of the given annotation "concurrent", hence the browser will not be blocked while "computing".
 
-However, if you remove the annotation, the browser will of course be blocked for 4 seconds during execution.
+However, if you remove the annotation, the browser will be blocked for 4 seconds during execution.
 Make sure to import the decorator and invoke the function "invokeWebWorker" with some parameter x.
 
-The function will resolve the given promise with (5 * x) if x is even, otherwise it will reject the Promise with (5 * x).
+The function will resolve the given promise if x is even, otherwise it will reject it.
+However, the return value will always be (5 * x).
 
 export class ExampleClass {
 
 	private factor = 5;
 
-	constructor() {}
+	constructor() {
+		this.invokeWebWorkerFunction(4);
+	}
 
 	@concurrent
 	public hardFunction(x:number):Promise<number> {
@@ -40,13 +47,13 @@ export class ExampleClass {
 		return promise;
 	}
 
-	public invokeWebWorker(x:number):void {
+	public invokeWebWorkerFunction(x:number):void {
 		this.hardFunction(x).then(
 			(data) => {
-				console.log('Success! ', data);
+				alert ('Resolve: ' + data);
 			},
 			(error) => {
-				console.error ('Error! ', error);
+				alert ('Reject: ' + error);
 			}
 		)
 	}
@@ -56,9 +63,10 @@ export class ExampleClass {
 
 Restrictions:
 
-- Since the decorated function will have to return the calculated data as a Promise, since it uses
-  a WebWorker to generate the data, the decorated function must return a Promise beforehand.
-  Hence only function with a return type of "Promise<any>"" will be decoratable
+- Since the decorated function will have to return the calculated data as a Promise, because it uses
+  a WebWorker to generate the data, the decorated function must return a Promise beforehand to ensure
+  type consistency.
+  Therefore only function with a return type of "Promise<any>"" will be decoratable.
 - Due to technical restrictions the decorated function will only be able to READ variables from its
   context .
   (e.g. "this.factor" in the given example is read-only)
